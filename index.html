@@ -211,7 +211,7 @@ header{flex-wrap:wrap}
 <div id="exp" hidden><div class="qh"><b>فحص الصادر</b></div><div id="stb" hidden></div><div id="expc"></div></div>
 <input type="file" id="phf" accept="image/*" capture="environment" hidden><input type="file" id="cdf" accept="image/*" capture="environment" hidden>
 <div id="md" hidden></div><div id="toast" hidden></div><div id="splash"><img id="spl" alt=""><b>AGREEN Quality Hub</b><small>Designed &amp; Developed by</small><strong class="spname">Mohamed Elsayed</strong><small>Quality Manager</small></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script>if(!window.THREE){(function(){function st(){return new Proxy(function(){},{get:function(t,p){if(p===Symbol.toPrimitive)return function(){return 0};if(p==='domElement')return document.createElement('canvas');return st()},set:function(){return true},apply:function(){return st()},construct:function(){return st()}})}window.THREE=st()})()}</script>
 <script>
 const P=[
 {c:'9019',n:'مواصفة عميل 9019',L:120,W:100,
@@ -245,7 +245,7 @@ const P=[
 ];
 const COLH={A:'e11d48',B:'2563eb',C:'16a34a',D:'f59e0b'};
 const NL=(a,b,c,d)=>[['A','فرش+شاسيه+دكمة',7,a],['B','شاسيه+دكمة',7,b],['C','فرش+شاسيه (تنى)',5,c],['D','قفل+دكمة',d[0],d[1]]];
-P[0].nl=NL(18,27,36,[6,45]);P[1].nl=NL(18,18,36,[5,30]);P[2].nl=P[5].nl=NL(18,18,57,[7,30]);P[3].nl=NL(27,27,36,[7,45]);P[6].nl=NL(28,18,36,[5,30]);P[7].nl=NL(18,18,36,[6,30]);
+P[0].nl=NL(18,27,36,[6,45]);P[1].nl=NL(18,18,36,[5,30]);P[2].nl=P[4].nl=NL(18,18,57,[7,30]);P[3].nl=NL(27,27,36,[7,45]);P[5].nl=NL(28,18,36,[5,30]);P[6].nl=NL(18,18,36,[6,30]);
 const $=s=>document.querySelector(s);
 const cnt=(a,f)=>{const m={};a.forEach(v=>{const k=f(v);m[k]=(m[k]||0)+1});return Object.entries(m)};
 const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(38,1,.05,3000);
