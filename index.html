@@ -223,6 +223,10 @@ const P=[
  ch:{n:3,w:7.5,t:2.2},blk:{e:[12,7.5,9],m:[12,7.5,9]},bot:{t:1.6,w:7.5,rows:[120,105,120],ends:[85,85]},
  nails:'102 مسمار',x:['نهاية الكرتونة لازم تتسند على ألواح الفرش.']},
 
+{c:'لينا',n:'أجرين العامة (لينا)',L:120,W:100,
+ dk:{w:[10,12,7.5,12,7.5,12,10],g:[10,4.5,9.5,10,5,10],t:1.6},
+ ch:{n:3,w:7.5,t:2.2},blk:{e:[12,7.5,9],m:[12,7.5,9]},bot:{t:1.9,w:7.5,rows:[120,105,120],ends:[85,85]},
+ nails:'123 مسمار',x:[]},
 {c:'7441',n:'مواصفة عميل 7441',L:120,W:100,
  dk:{w:Array(9).fill(10),g:[3,3,3,6,6,3,3,3],t:1.6},
  ch:{n:3,w:10,t:2.5},blk:{e:[15,10,9],m:[10,10,9]},bot:{t:2.2,w:10,rows:[100,100,100],ends:[100,100]},
@@ -245,7 +249,7 @@ const P=[
 ];
 const COLH={A:'e11d48',B:'2563eb',C:'16a34a',D:'f59e0b'};
 const NL=(a,b,c,d)=>[['A','فرش+شاسيه+دكمة',7,a],['B','شاسيه+دكمة',7,b],['C','فرش+شاسيه (تنى)',5,c],['D','قفل+دكمة',d[0],d[1]]];
-P[0].nl=NL(18,27,36,[6,45]);P[1].nl=NL(18,18,36,[5,30]);P[2].nl=P[4].nl=NL(18,18,57,[7,30]);P[3].nl=NL(27,27,36,[7,45]);P[5].nl=NL(28,18,36,[5,30]);P[6].nl=NL(18,18,36,[6,30]);
+P[0].nl=NL(18,27,36,[6,45]);P[1].nl=NL(18,18,36,[5,30]);P[2].nl=P[5].nl=NL(18,18,57,[7,30]);P[3].nl=NL(27,27,36,[7,45]);P[6].nl=NL(28,18,36,[5,30]);P[7].nl=NL(18,18,36,[6,30]);
 const $=s=>document.querySelector(s);
 const cnt=(a,f)=>{const m={};a.forEach(v=>{const k=f(v);m[k]=(m[k]||0)+1});return Object.entries(m)};
 const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(38,1,.05,3000);
@@ -988,12 +992,33 @@ function renderExp(){
  dvUpd();
 }
 function dcCalc(){const e=i=>document.getElementById(i);if(!e('dc_L'))return;const L=parseFloat(e('dc_L').value),p=parseFloat(e('dc_P').value),c=parseFloat(e('dc_pc').value);if(isNaN(L)||isNaN(p)||isNaN(c)||c===0){e('dc_res').textContent='⚠️ الرجاء إدخال قيم صحيحة';return}e('dc_res').textContent='✅ الكمية المطلوبة للمنتج: '+((L*p)/(c*1e4)).toFixed(2)+' لتر'}
+function ppmBlock(){
+ const b=$('#qb');
+ const box=document.createElement('div');
+ box.style.cssText='background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:12px';
+ box.innerHTML='<div style="font-weight:800;margin-bottom:6px">🧪 حاسبة التركيز (ppm)</div>'
+  +'<label style="display:block;font-size:.85rem;color:var(--mut)">كمية المطهر (لتر)<input id="ppq" type="number" step="any" class="tin"></label>'
+  +'<label style="display:block;font-size:.85rem;color:var(--mut);margin-top:6px">التركيز (%)<input id="ppc" type="number" step="any" class="tin"></label>'
+  +'<label style="display:block;font-size:.85rem;color:var(--mut);margin-top:6px">حجم الحوض / الماء (لتر)<input id="ppv" type="number" step="any" class="tin"></label>'
+  +'<button id="ppbtn" class="btn" style="margin-top:8px;width:100%">احسب التركيز</button>'
+  +'<div id="ppr" style="margin-top:8px;font-size:1.05rem;font-weight:800"></div>'
+  +'<div style="font-size:.75rem;color:var(--mut);margin-top:4px">المعادلة: ppm = الكمية × التركيز % × 10,000 ÷ حجم الحوض</div>';
+ b.appendChild(box);
+ $('#ppbtn').onclick=()=>{
+  const q=parseFloat($('#ppq').value),c=parseFloat($('#ppc').value),v=parseFloat($('#ppv').value);
+  const r=$('#ppr');
+  if(!(q>0)||!(c>0)||!(v>0)){r.style.color='#dc2626';r.textContent='⚠️ ادخل قيم أكبر من صفر في الثلاث خانات';return}
+  const ppm=q*c*1e4/v;
+  r.style.color='#16a34a';
+  r.textContent='✅ التركيز = '+Math.round(ppm).toLocaleString('ar-EG')+' ppm';
+ };
+}
 function setQ(k){
  qk=k;document.documentElement.style.setProperty('--acc',QQ[k][1]);
  document.querySelectorAll('#qtabs .tab').forEach(t=>t.setAttribute('aria-pressed',t.dataset.q===k));
  const sb=$('#qsub');sb.innerHTML='';sb.hidden=k!=='dis';let sub='';
  if(k==='dis'){QD.forEach((n,i)=>{const e=document.createElement('button');e.className='chip';e.textContent=n;e.setAttribute('aria-pressed',i===qs);e.onclick=()=>{qs=i;setQ('dis')};sb.appendChild(e)});sub=' — '+QD[qs]}
- $('#qt').textContent=QQ[k][0]+sub;$('#qb').innerHTML=(k==='dis'&&qs===0)?DRN:(k==='dis'&&qs===1)?HYD:(k==='lem')?QLM:'<p>لسه بدون بيانات.</p>';dcCalc();tvCalc();if(k==='ship')renderShip();if(k==='trace')renderTrace();fx();applyTr();
+ $('#qt').textContent=QQ[k][0]+sub;$('#qb').innerHTML=(k==='dis'&&qs===0)?DRN:(k==='dis'&&qs===1)?HYD:(k==='lem')?QLM:'<p>لسه بدون بيانات.</p>';dcCalc();tvCalc();if(k==='dis')ppmBlock();if(k==='ship')renderShip();if(k==='trace')renderTrace();fx();applyTr();
 }
 function setSec(s){
  sec=s;$('#prod').hidden=s!=='p';$('#qual').hidden=s!=='q';$('#exp').hidden=s!=='x';$('#ptabs').hidden=s!=='p';$('#qtabs').hidden=s!=='q';
